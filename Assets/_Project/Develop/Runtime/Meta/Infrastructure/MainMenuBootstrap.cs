@@ -35,14 +35,14 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
-                SwitchToGameplay(GameMode.Digits);
+                SwitchToGameplayWith(GameMode.Digits);
 
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
-                SwitchToGameplay(GameMode.Letters);
+                SwitchToGameplayWith(GameMode.Letters);
         }
 
-        private void SwitchToGameplay(GameMode gameMode)
+        private void SwitchToGameplayWith(GameMode gameMode)
         {
             SceneSwitcherService sceneSwitcherService = _container.Resolve<SceneSwitcherService>();
             ICoroutinesPerformer coroutinesPerformer = _container.Resolve<ICoroutinesPerformer>();
