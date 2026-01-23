@@ -1,3 +1,4 @@
+using Assets._Project.Develop.Runtime.Gameplay;
 using Assets._Project.Develop.Runtime.Gameplay.Infrastructure;
 using Assets._Project.Develop.Runtime.Infrastructure;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
@@ -33,13 +34,20 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                SceneSwitcherService sceneSwitcherService = _container.Resolve<SceneSwitcherService>();
-                ICoroutinesPerformer coroutinesPerformer = _container.Resolve<ICoroutinesPerformer>();
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+                SwitchToGameplay(GameMode.Digits);
 
-                coroutinesPerformer.StartPerform(sceneSwitcherService.ProcessSwitchTo(Scenes.Gameplay, new GameplayInputArgs(2)));
-            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+                SwitchToGameplay(GameMode.Letters);
+        }
+
+        private void SwitchToGameplay(GameMode gameMode)
+        {
+            SceneSwitcherService sceneSwitcherService = _container.Resolve<SceneSwitcherService>();
+            ICoroutinesPerformer coroutinesPerformer = _container.Resolve<ICoroutinesPerformer>();
+
+            coroutinesPerformer.StartPerform(sceneSwitcherService.ProcessSwitchTo(Scenes.Gameplay, new GameplayInputArgs(gameMode)));
         }
     }
 }

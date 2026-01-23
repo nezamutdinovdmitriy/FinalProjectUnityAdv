@@ -6,9 +6,7 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.DI
     public class DIContainer
     {
         private readonly Dictionary<Type, Registration> _container = new();
-
         private readonly List<Type> _requests = new();
-
         private readonly DIContainer _parent;
 
         public DIContainer(DIContainer parent) => _parent = parent;

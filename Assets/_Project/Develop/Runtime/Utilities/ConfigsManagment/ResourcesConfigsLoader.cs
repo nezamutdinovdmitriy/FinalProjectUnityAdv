@@ -1,3 +1,4 @@
+using Assets._Project.Develop.Runtime.Gameplay.Configs;
 using Assets._Project.Develop.Runtime.Utilities.AssetsManagment;
 using System;
 using System.Collections;
@@ -12,7 +13,7 @@ namespace Assets._Project.Develop.Runtime.Utilities.ConfigsManagment
 
         private Dictionary<Type, string> _configsResourcesPath = new()
     {
-        
+            {typeof(LevelsConfigs), "Gameplay/LevelsConfigs" }
     };
 
         public ResourcesConfigsLoader(ResourcesAssetsLoader resources)
