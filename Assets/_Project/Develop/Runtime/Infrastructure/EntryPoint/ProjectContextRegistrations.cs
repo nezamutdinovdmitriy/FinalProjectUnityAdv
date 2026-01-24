@@ -2,7 +2,6 @@ using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Utilities.AssetsManagment;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
-using Assets._Project.Develop.Runtime.Utilities.InputManagment;
 using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
 using Object = UnityEngine.Object;
 
@@ -49,9 +48,11 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
         }
 
         private static SceneSwitcherService CreateSceneSwitcherService(DIContainer c)
-            => new(
-                c.Resolve<SceneLoaderService>(),
-                c.Resolve<ILoadingScreen>(),
-                c);
+        {
+            SceneLoaderService sceneLoaderService = c.Resolve<SceneLoaderService>();
+            ILoadingScreen loadingScreen = c.Resolve<ILoadingScreen>();
+
+            return new SceneSwitcherService(sceneLoaderService, loadingScreen, c);
+        }
     }
 }

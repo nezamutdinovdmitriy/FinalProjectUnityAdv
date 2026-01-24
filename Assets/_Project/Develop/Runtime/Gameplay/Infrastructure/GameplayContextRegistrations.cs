@@ -47,12 +47,11 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 
         private static GameplayExitService CreateGameplayExitService(DIContainer c)
         {
-            return new GameplayExitService(
-            c.Resolve<GameplayCycle>(),
-            c.Resolve<SceneSwitcherService>(),
-            c.Resolve<ICoroutinesPerformer>(),
-            _args
-            );
+            GameplayCycle cycle = c.Resolve<GameplayCycle>();
+            SceneSwitcherService sceneSwitcher = c.Resolve<SceneSwitcherService>();
+            ICoroutinesPerformer coroutinesPerformer = c.Resolve<CoroutinesPerformer>();
+            
+            return new GameplayExitService(cycle, sceneSwitcher, coroutinesPerformer, _args);
         }
     }
 }

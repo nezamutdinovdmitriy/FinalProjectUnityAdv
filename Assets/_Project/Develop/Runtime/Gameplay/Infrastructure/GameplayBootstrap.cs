@@ -10,7 +10,9 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
     public class GameplayBootstrap : SceneBootstrap
     {
         private DIContainer _container;
+        
         private GameplayCycle _gameplayCycle;
+        private GameplayExitService _exitService;
 
         public override void ProcessRegistrations(DIContainer container, IInputSceneArgs sceneArgs = null)
         {
@@ -26,7 +28,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         {
             _gameplayCycle = _container.Resolve<GameplayCycle>();
 
-            _container.Resolve<GameplayExitService>();
+            _exitService = _container.Resolve<GameplayExitService>();
 
             yield break;
         }
@@ -40,6 +42,12 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         private void Update()
         {
             _gameplayCycle?.Update();
+        }
+
+        private void OnDestroy()
+        {
+            _gameplayCycle.Dispose();
+            _exitService.Dispose();
         }
     }
 }

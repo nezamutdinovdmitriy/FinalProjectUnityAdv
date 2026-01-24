@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Gameplay
 {
-    public class GameplayCycle
+    public class GameplayCycle : IDisposable
     {
         public event Action<GameplayResult> Finished;
         public event Action ExitConfirmed;
@@ -35,6 +35,12 @@ namespace Assets._Project.Develop.Runtime.Gameplay
             _input.OnConfirm += HandleConfirm;
 
             Debug.Log($"Загаданная последовательность: {_targetSequence}");
+        }
+
+        public void Dispose()
+        {
+            _input.OnInput -= HandleInput;
+            _input.OnConfirm -= HandleConfirm;
         }
 
         public void Update() => _input.Update();
