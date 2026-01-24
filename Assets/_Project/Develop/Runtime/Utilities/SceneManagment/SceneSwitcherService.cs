@@ -31,7 +31,7 @@ namespace Assets._Project.Develop.Runtime.Utilities.SceneManagment
             if (sceneBootstrap == null)
                 throw new NullReferenceException(nameof(sceneBootstrap) + "not found!");
 
-            DIContainer sceneContainer = new DIContainer(_projectContainer);
+            DIContainer sceneContainer = new(_projectContainer);
 
             sceneBootstrap.ProcessRegistrations(sceneContainer, sceneArgs);
 

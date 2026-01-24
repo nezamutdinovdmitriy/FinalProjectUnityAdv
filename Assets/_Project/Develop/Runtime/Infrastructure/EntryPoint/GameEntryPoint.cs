@@ -17,7 +17,7 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
 
             Debug.Log("Процесс регистрации сервисов всего проекта");
 
-            DIContainer projectContainer = new DIContainer();
+            DIContainer projectContainer = new();
 
             ProjectContextRegistrations.Process(projectContainer);
 

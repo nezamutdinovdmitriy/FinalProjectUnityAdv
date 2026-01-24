@@ -9,9 +9,9 @@ namespace Assets._Project.Develop.Runtime.Utilities.ConfigsManagment
 {
     public class ResourcesConfigsLoader : IConfigsLoader
     {
-        private ResourcesAssetsLoader _resources;
+        private readonly ResourcesAssetsLoader _resources;
 
-        private Dictionary<Type, string> _configsResourcesPath = new()
+        private readonly Dictionary<Type, string> _configsResourcesPath = new()
     {
             {typeof(LevelsConfigs), "Gameplay/LevelsConfigs" }
     };

@@ -2,6 +2,7 @@ using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Utilities.AssetsManagment;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
+using Assets._Project.Develop.Runtime.Utilities.InputManagment;
 using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
 using Object = UnityEngine.Object;
 
@@ -23,11 +24,11 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
         {
             ResourcesAssetsLoader resourcesAssetsLoader = c.Resolve<ResourcesAssetsLoader>();
 
-            ResourcesConfigsLoader resourcesConfigsLoader = new ResourcesConfigsLoader(resourcesAssetsLoader);
+            ResourcesConfigsLoader resourcesConfigsLoader = new(resourcesAssetsLoader);
             return new ConfigsProviderService(resourcesConfigsLoader);
         }
 
-        private static ResourcesAssetsLoader CreateResourcesAssetsLoader(DIContainer c) => new ResourcesAssetsLoader();
+        private static ResourcesAssetsLoader CreateResourcesAssetsLoader(DIContainer c) => new();
 
         private static CoroutinesPerformer CreateCoroutinesPerformer(DIContainer c)
         {
@@ -37,7 +38,7 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
             return Object.Instantiate(coroutinesPerformerPrefab);
         }
 
-        private static SceneLoaderService CreateSceneLoaderService(DIContainer c) => new SceneLoaderService();
+        private static SceneLoaderService CreateSceneLoaderService(DIContainer c) => new();
 
         private static StandardLoadingScreen CreateLoadingScreen(DIContainer c)
         {
@@ -48,7 +49,7 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
         }
 
         private static SceneSwitcherService CreateSceneSwitcherService(DIContainer c)
-            => new SceneSwitcherService(
+            => new(
                 c.Resolve<SceneLoaderService>(),
                 c.Resolve<ILoadingScreen>(),
                 c);

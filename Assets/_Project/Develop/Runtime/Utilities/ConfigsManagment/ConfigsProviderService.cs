@@ -9,7 +9,7 @@ namespace Assets._Project.Develop.Runtime.Utilities.ConfigsManagment
     {
         private readonly Dictionary<Type, object> _configs = new();
 
-        private IConfigsLoader[] _configsLoaders;
+        private readonly IConfigsLoader[] _configsLoaders;
 
         public ConfigsProviderService(params IConfigsLoader[] configsLoaders)
         {
