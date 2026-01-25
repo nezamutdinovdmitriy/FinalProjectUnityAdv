@@ -1,7 +1,7 @@
 using Assets._Project.Develop.Runtime.Gameplay.Configs;
 using UnityEngine;
 
-namespace Assets._Project.Develop.Runtime.Utilities.GameplayServices
+namespace Assets._Project.Develop.Runtime.Gameplay.GameplayServices
 {
     public class SequenceGeneratorService   
     {

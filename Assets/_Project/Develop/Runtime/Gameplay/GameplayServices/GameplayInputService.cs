@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Assets._Project.Develop.Runtime.Utilities.InputManagment
+namespace Assets._Project.Develop.Runtime.Gameplay.GameplayServices
 {
     public class GameplayInputService
     {

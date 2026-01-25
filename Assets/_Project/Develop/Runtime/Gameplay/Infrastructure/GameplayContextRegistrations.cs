@@ -1,9 +1,8 @@
 using Assets._Project.Develop.Runtime.Gameplay.Configs;
+using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
-using Assets._Project.Develop.Runtime.Utilities.GameplayServices;
-using Assets._Project.Develop.Runtime.Utilities.InputManagment;
 using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
 using UnityEngine;
 
@@ -23,14 +22,15 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
             container.RegisterAsSingle(CreateSequenceGeneratorService);
             container.RegisterAsSingle(CreateGameplayInputService);
             container.RegisterAsSingle(CreateGameplayExitService);
+            container.RegisterAsSingle(CreateSequenceGameplay);
         }
 
         private static GameplayCycle CreateGameplayCycle(DIContainer c)
         {
             GameplayInputService input = c.Resolve<GameplayInputService>();
-            SequenceGeneratorService generator = c.Resolve<SequenceGeneratorService>();
+            SequenceGameplay sequenceGameplay = c.Resolve<SequenceGameplay>();
 
-            return new GameplayCycle(input, generator);
+            return new GameplayCycle(input, sequenceGameplay);
         }
 
         private static SequenceGeneratorService CreateSequenceGeneratorService(DIContainer c)
@@ -49,9 +49,17 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         {
             GameplayCycle cycle = c.Resolve<GameplayCycle>();
             SceneSwitcherService sceneSwitcher = c.Resolve<SceneSwitcherService>();
-            ICoroutinesPerformer coroutinesPerformer = c.Resolve<CoroutinesPerformer>();
+            ICoroutinesPerformer coroutinesPerformer = c.Resolve<ICoroutinesPerformer>();
             
             return new GameplayExitService(cycle, sceneSwitcher, coroutinesPerformer, _args);
+        }
+
+        private static SequenceGameplay CreateSequenceGameplay(DIContainer c)
+        {
+            GameplayInputService input = c.Resolve<GameplayInputService>();
+            SequenceGeneratorService sequenceGenerator = c.Resolve<SequenceGeneratorService>();
+
+            return new SequenceGameplay(input, sequenceGenerator);
         }
     }
 }

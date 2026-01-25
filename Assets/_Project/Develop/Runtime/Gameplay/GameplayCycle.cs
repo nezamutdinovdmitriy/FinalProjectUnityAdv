@@ -1,7 +1,5 @@
-using Assets._Project.Develop.Runtime.Utilities.GameplayServices;
-using Assets._Project.Develop.Runtime.Utilities.InputManagment;
+using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using System;
-using System.Text;
 using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Gameplay
@@ -12,66 +10,35 @@ namespace Assets._Project.Develop.Runtime.Gameplay
         public event Action ExitConfirmed;
 
         private readonly GameplayInputService _input;
-        private readonly string _targetSequence;
-        private readonly StringBuilder _inputBuffer = new();
+        private readonly SequenceGameplay _gameplay;
 
-        private State _state = State.Playing;
+        private bool _awaitingConfirm;
 
-        private enum State
-        {
-            Playing,
-            AwaitingConfirm
-        }
-
-        public GameplayCycle(GameplayInputService input, SequenceGeneratorService generatorService)
+        public GameplayCycle(GameplayInputService input, SequenceGameplay gameplay)
         {
             _input = input;
-            _targetSequence = generatorService.Generate();
+            _gameplay = gameplay;
         }
 
         public void StartGame()
         {
-            _input.OnInput += HandleInput;
+            _gameplay.Finished += OnGameplayFinished;
             _input.OnConfirm += HandleConfirm;
 
-            Debug.Log($"Загаданная последовательность: {_targetSequence}");
+            _gameplay.Start();
         }
 
         public void Dispose()
         {
-            _input.OnInput -= HandleInput;
+            _gameplay.Finished -= OnGameplayFinished;
             _input.OnConfirm -= HandleConfirm;
         }
 
         public void Update() => _input.Update();
 
-        private void HandleInput(char input)
+        private void OnGameplayFinished(GameplayResult result)
         {
-            if (_state != State.Playing)
-                return;
-
-            _inputBuffer.Append(input);
-            Debug.Log($"Ввод игрока: {_inputBuffer}");
-
-            if (_inputBuffer.Length < _targetSequence.Length)
-                return;
-
-            FinishGame();
-        }
-
-        private void FinishGame()
-        {
-            _state = State.AwaitingConfirm;
-
-            _input.OnInput -= HandleInput;
-
-            GameplayResult result = _inputBuffer.ToString() == _targetSequence ? GameplayResult.Win : GameplayResult.Lose;
-
-            if (result == GameplayResult.Win)
-                Debug.Log("Win");
-            else
-                Debug.Log("Lose");
-
+            _awaitingConfirm = true;
             Finished?.Invoke(result);
 
             Debug.Log("Для продолжения нажмите SPACE!");
@@ -79,10 +46,8 @@ namespace Assets._Project.Develop.Runtime.Gameplay
 
         private void HandleConfirm()
         {
-            if (_state != State.AwaitingConfirm)
+            if (_awaitingConfirm == false)
                 return;
-
-            _input.OnConfirm -= HandleConfirm;
 
             ExitConfirmed?.Invoke();
         }

@@ -1,10 +1,9 @@
-using Assets._Project.Develop.Runtime.Gameplay;
 using Assets._Project.Develop.Runtime.Gameplay.Infrastructure;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
 using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
 using System;
 
-namespace Assets._Project.Develop.Runtime.Utilities.GameplayServices
+namespace Assets._Project.Develop.Runtime.Gameplay.GameplayServices
 {
     public class GameplayExitService : IDisposable
     {
