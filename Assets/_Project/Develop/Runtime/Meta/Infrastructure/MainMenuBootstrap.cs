@@ -2,6 +2,7 @@ using Assets._Project.Develop.Runtime.Gameplay;
 using Assets._Project.Develop.Runtime.Gameplay.Infrastructure;
 using Assets._Project.Develop.Runtime.Infrastructure;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
+using Assets._Project.Develop.Runtime.Meta.Features;
 using Assets._Project.Develop.Runtime.Meta.Infrastructure.MetaServices;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
 using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
@@ -14,6 +15,8 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
     {
         private DIContainer _container;
         private GameModeSelectorService _gameModeSelector;
+
+        private WalletService _walletService;
 
         public override void ProcessRegistrations(DIContainer container, IInputSceneArgs sceneArgs = null)
         {
@@ -29,6 +32,8 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
             _gameModeSelector = _container.Resolve<GameModeSelectorService>();
 
             _gameModeSelector.ModeSelected += OnGameModeSelected;
+
+            _walletService = _container.Resolve<WalletService>();
 
             yield break;
         }
@@ -46,6 +51,21 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
         private void Update()
         {
             _gameModeSelector?.Update();
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                _walletService.Add(CurrencyTypes.Gold, 10);
+                Debug.Log($"Кол-во золота: {_walletService.GetCurrency(CurrencyTypes.Gold).Value}");
+            }
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                if(_walletService.Enough(CurrencyTypes.Gold, 10))
+                {
+                    _walletService.Spend(CurrencyTypes.Gold, 10);
+                    Debug.Log($"Кол-во золота: {_walletService.GetCurrency(CurrencyTypes.Gold).Value}");
+                }
+            }
         }
 
         private void OnGameModeSelected(GameMode gameMode)
