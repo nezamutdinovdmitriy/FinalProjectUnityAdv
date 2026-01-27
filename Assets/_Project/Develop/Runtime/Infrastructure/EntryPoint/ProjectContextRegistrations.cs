@@ -93,7 +93,7 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
             foreach (CurrencyTypes currency in Enum.GetValues(typeof(CurrencyTypes)))
                 currencies[currency] = new ReactiveVariable<int>();
 
-            return new WalletService(currencies);
+            return new WalletService(currencies, c.Resolve<PlayerDataProvider>());
         }
     }
 }
