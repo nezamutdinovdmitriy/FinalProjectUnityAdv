@@ -10,12 +10,12 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Configs
     {
         [SerializeField] private List<Configs> _configs;
 
-        public LevelConfig GetLevelConfigBy(GameMode gameMode) => _configs.First(config => config.GameMode == gameMode).LevelConfig;
+        public LevelConfig GetLevelConfigBy(GameModeType gameMode) => _configs.First(config => config.GameMode == gameMode).LevelConfig;
 
         [Serializable]
         private class Configs
         {
-            [field: SerializeField] public GameMode GameMode {  get; private set; }
+            [field: SerializeField] public GameModeType GameMode {  get; private set; }
             [field: SerializeField] public LevelConfig LevelConfig { get; private set; }
         }
     }

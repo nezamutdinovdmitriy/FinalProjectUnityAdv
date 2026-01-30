@@ -1,6 +1,6 @@
 namespace Assets._Project.Develop.Runtime.Gameplay
 {
-    public enum GameMode
+    public enum GameModeType
     {
         Digits,
         Letters

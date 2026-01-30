@@ -82,7 +82,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay
             switch (_result)
             {
                 case GameplayResult.Win:
-                    _walletService.Add(CurrencyTypes.Gold, _gameplay.Config.WinReward);
+                    _walletService.Add(CurrencyType.Gold, _gameplay.Config.WinReward);
                     
                     _coroutinesPerformer.StartPerform(_sceneSwitcherService.ProcessSwitchTo(Scenes.MainMenu));
 
@@ -92,15 +92,15 @@ namespace Assets._Project.Develop.Runtime.Gameplay
                     break;
 
                 case GameplayResult.Lose:
-                    if (_walletService.Enough(CurrencyTypes.Gold, _gameplay.Config.DefeatPenalty))
+                    if (_walletService.Enough(CurrencyType.Gold, _gameplay.Config.DefeatPenalty))
                     {
-                        _walletService.Spend(CurrencyTypes.Gold, _gameplay.Config.DefeatPenalty);
+                        _walletService.Spend(CurrencyType.Gold, _gameplay.Config.DefeatPenalty);
                         Debug.Log($"Вы потеряли {_gameplay.Config.DefeatPenalty} монет");
                         _coroutinesPerformer.StartPerform(_sceneSwitcherService.ProcessSwitchTo(Scenes.Gameplay, _args));
                     }
                     else
                     {
-                        _walletService.Spend(CurrencyTypes.Gold, _walletService.GetCurrency(CurrencyTypes.Gold).Value);
+                        _walletService.Spend(CurrencyType.Gold, _walletService.GetCurrency(CurrencyType.Gold).Value);
                         Debug.Log("Недостаточно монет для продолжения игры");
                         _coroutinesPerformer.StartPerform(_sceneSwitcherService.ProcessSwitchTo(Scenes.MainMenu));
                     }

@@ -14,14 +14,14 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
         {
             Debug.Log("Процесс регистрации сервисов на сцене меню!");
 
-            container.RegisterAsSingle(CreateGameModeSelectorService);
             container.RegisterAsSingle(CreatePlayerStatsPresenter);
             container.RegisterAsSingle(CreateStatsResetPurchaseService);
+            container.RegisterAsSingle(CreateMainMenuInputService);
         }
 
-        private static GameModeSelectorService CreateGameModeSelectorService(DIContainer c)
+        private static MainMenuInputService CreateMainMenuInputService(DIContainer c)
         {
-            return new GameModeSelectorService();
+            return new MainMenuInputService();
         }
 
         private static PlayerStatsPresenter CreatePlayerStatsPresenter(DIContainer c)
@@ -40,7 +40,7 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
 
             StatsResetConfig config = configsProviderService.GetConfig<StatsResetConfig>();
 
-            return new StatsResetPurchaseService(walletService, winLossService, config);
+            return new StatsResetPurchaseService(walletService, winLossService, config.Price);
         }
     }
 }

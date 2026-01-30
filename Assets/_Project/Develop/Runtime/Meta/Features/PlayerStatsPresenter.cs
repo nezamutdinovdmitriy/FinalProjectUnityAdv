@@ -16,7 +16,7 @@ namespace Assets._Project.Develop.Runtime.Meta.Features
 
         public void Show()
         {
-            foreach (CurrencyTypes currency in _walletService.AvailableCurrencies)
+            foreach (CurrencyType currency in _walletService.AvailableCurrencies)
                 Debug.Log($"{currency}: {_walletService.GetCurrency(currency).Value}");
 
             Debug.Log($"Wins: {_winLossService.TotalWins}");

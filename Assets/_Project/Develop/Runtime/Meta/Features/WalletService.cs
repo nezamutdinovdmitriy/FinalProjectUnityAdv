@@ -9,21 +9,21 @@ namespace Assets._Project.Develop.Runtime.Meta.Features
 {
     public class WalletService : IDataReader<PlayerData>, IDataWriter<PlayerData>
     {
-        private readonly Dictionary<CurrencyTypes, ReactiveVariable<int>> _currencies;
+        private readonly Dictionary<CurrencyType, ReactiveVariable<int>> _currencies;
 
-        public WalletService(Dictionary<CurrencyTypes, ReactiveVariable<int>> currencies, PlayerDataProvider playerDataProvider)
+        public WalletService(Dictionary<CurrencyType, ReactiveVariable<int>> currencies, PlayerDataProvider playerDataProvider)
         {
-            _currencies = new Dictionary<CurrencyTypes, ReactiveVariable<int>>(currencies);
+            _currencies = new Dictionary<CurrencyType, ReactiveVariable<int>>(currencies);
 
             playerDataProvider.RegisterWriter(this);
             playerDataProvider.RegisterReader(this);
         }
 
-        public List<CurrencyTypes> AvailableCurrencies => _currencies.Keys.ToList();
+        public List<CurrencyType> AvailableCurrencies => _currencies.Keys.ToList();
 
-        public IReadOnlyVariable<int> GetCurrency(CurrencyTypes currencyTypes) => _currencies[currencyTypes];
+        public IReadOnlyVariable<int> GetCurrency(CurrencyType currencyTypes) => _currencies[currencyTypes];
 
-        public void Add(CurrencyTypes currencyTypes, int amount)
+        public void Add(CurrencyType currencyTypes, int amount)
         {
             if (amount < 0)
                 throw new ArgumentOutOfRangeException(nameof(amount));
@@ -31,7 +31,7 @@ namespace Assets._Project.Develop.Runtime.Meta.Features
             _currencies[currencyTypes].Value += amount;
         }
 
-        public void Spend(CurrencyTypes currencyTypes, int amount)
+        public void Spend(CurrencyType currencyTypes, int amount)
         {
             if (Enough(currencyTypes, amount) == false)
                 throw new InvalidOperationException($"Not enough: {currencyTypes.ToString()}");
@@ -42,7 +42,7 @@ namespace Assets._Project.Develop.Runtime.Meta.Features
             _currencies[currencyTypes].Value -= amount;
         }
 
-        public bool Enough(CurrencyTypes currencyTypes, int amount)
+        public bool Enough(CurrencyType currencyTypes, int amount)
         {
             if (amount < 0)
                 throw new ArgumentOutOfRangeException(nameof(amount));
@@ -52,7 +52,7 @@ namespace Assets._Project.Develop.Runtime.Meta.Features
 
         public void WriteTo(PlayerData data)
         {
-            foreach (KeyValuePair<CurrencyTypes, ReactiveVariable<int>> currency in _currencies)
+            foreach (KeyValuePair<CurrencyType, ReactiveVariable<int>> currency in _currencies)
             {
                 if (data.WalletData.ContainsKey(currency.Key))
                     data.WalletData[currency.Key] = currency.Value.Value;
@@ -63,7 +63,7 @@ namespace Assets._Project.Develop.Runtime.Meta.Features
 
         public void ReadFrom(PlayerData data)
         {
-            foreach (KeyValuePair<CurrencyTypes, int> currency in data.WalletData)
+            foreach (KeyValuePair<CurrencyType, int> currency in data.WalletData)
             {
                 if (_currencies.ContainsKey(currency.Key))
                     _currencies[currency.Key].Value = currency.Value;

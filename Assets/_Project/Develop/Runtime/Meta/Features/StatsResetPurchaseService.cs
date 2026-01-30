@@ -1,5 +1,4 @@
 using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
-using Assets._Project.Develop.Runtime.Meta.Configs.StatsReset;
 using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Meta.Features
@@ -8,20 +7,21 @@ namespace Assets._Project.Develop.Runtime.Meta.Features
     {
         private WalletService _walletService;
         private WinLossService _winLossService;
-        private StatsResetConfig _config;
+        
+        private int _price;
 
-        public StatsResetPurchaseService(WalletService walletService, WinLossService winLossService, StatsResetConfig config)
+        public StatsResetPurchaseService(WalletService walletService, WinLossService winLossService, int config)
         {
             _walletService = walletService;
             _winLossService = winLossService;
-            _config = config;
+            _price = config;
         }
 
         public void Reset()
         {
-            if(_walletService.Enough(CurrencyTypes.Gold, _config.Price))
+            if(_walletService.Enough(CurrencyType.Gold, _price))
             {
-                _walletService.Spend(CurrencyTypes.Gold, _config.Price);
+                _walletService.Spend(CurrencyType.Gold, _price);
 
                 _winLossService.Reset();
 

@@ -1,5 +1,4 @@
 using Assets._Project.Develop.Runtime.Gameplay;
-using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using Assets._Project.Develop.Runtime.Gameplay.Infrastructure;
 using Assets._Project.Develop.Runtime.Infrastructure;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
@@ -16,12 +15,11 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
     public class MainMenuBootstrap : SceneBootstrap
     {
         private DIContainer _container;
-        private GameModeSelectorService _gameModeSelector;
 
         private PlayerDataProvider _playerDataProvider;
-        private WinLossService _winLossService;
         private PlayerStatsPresenter _playerStatsPresenter;
         private StatsResetPurchaseService _playerStatsResetPurchaseService;
+        private MainMenuInputService _menuInputService;
 
         private ICoroutinesPerformer _coroutinesPerformer;
 
@@ -36,27 +34,26 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
         {
             Debug.Log("Инициализация меню сцены");
 
-            _gameModeSelector = _container.Resolve<GameModeSelectorService>();
-
-            _gameModeSelector.ModeSelected += OnGameModeSelected;
-
             _playerDataProvider = _container.Resolve<PlayerDataProvider>();
-
             _coroutinesPerformer = _container.Resolve<ICoroutinesPerformer>();
 
-            _winLossService = _container.Resolve<WinLossService>();
-
             _playerStatsPresenter = _container.Resolve<PlayerStatsPresenter>();
-
             _playerStatsResetPurchaseService = _container.Resolve<StatsResetPurchaseService>();
+      
+            _menuInputService = _container.Resolve<MainMenuInputService>();
+
+            _menuInputService.ModeSelected += OnGameModeSelected;
+            _menuInputService.StatsViewRequested += OnStatsViewRequested;
+            _menuInputService.ResetStatsPurchaseRequested += OnResetStatsPurchaseRequested;
 
             yield break;
         }
 
         private void OnDestroy()
         {
-            _gameModeSelector.ModeSelected -= OnGameModeSelected;
-
+            _menuInputService.ModeSelected -= OnGameModeSelected;
+            _menuInputService.StatsViewRequested -= OnStatsViewRequested;
+            _menuInputService.ResetStatsPurchaseRequested -= OnResetStatsPurchaseRequested;
         }
 
         public override void Run()
@@ -66,24 +63,24 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
 
         private void Update()
         {
-            _gameModeSelector?.Update();
-
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                _playerStatsResetPurchaseService.Reset();
-                _coroutinesPerformer.StartPerform(_playerDataProvider.Save());
-            }    
-
-            if (Input.GetKeyDown(KeyCode.S))
-                _playerStatsPresenter.Show();
+            _menuInputService?.Update();
         }
 
-        private void OnGameModeSelected(GameMode gameMode)
+        private void OnGameModeSelected(GameModeType gameMode)
         {
             SceneSwitcherService sceneSwitcherService = _container.Resolve<SceneSwitcherService>();
             ICoroutinesPerformer coroutinesPerformer = _container.Resolve<ICoroutinesPerformer>();
 
             coroutinesPerformer.StartPerform(sceneSwitcherService.ProcessSwitchTo(Scenes.Gameplay, new GameplayInputArgs(gameMode)));
         }
+
+        private void OnResetStatsPurchaseRequested()
+        {
+            _playerStatsResetPurchaseService.Reset();
+
+            _coroutinesPerformer.StartPerform(_playerDataProvider.Save());
+        }
+
+        private void OnStatsViewRequested() => _playerStatsPresenter.Show();
     }
 }
