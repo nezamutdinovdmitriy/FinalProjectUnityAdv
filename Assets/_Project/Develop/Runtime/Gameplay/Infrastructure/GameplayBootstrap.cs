@@ -1,6 +1,7 @@
 using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using Assets._Project.Develop.Runtime.Infrastructure;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
+using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -12,7 +13,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         private DIContainer _container;
         
         private GameplayCycle _gameplayCycle;
-        private GameplayExitService _exitService;
 
         public override void ProcessRegistrations(DIContainer container, IInputSceneArgs sceneArgs = null)
         {
@@ -27,8 +27,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         public override IEnumerator Initialize()
         {
             _gameplayCycle = _container.Resolve<GameplayCycle>();
-
-            _exitService = _container.Resolve<GameplayExitService>();
 
             yield break;
         }
@@ -47,7 +45,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         private void OnDestroy()
         {
             _gameplayCycle.Dispose();
-            _exitService.Dispose();
         }
     }
 }

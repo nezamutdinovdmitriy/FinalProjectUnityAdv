@@ -1,8 +1,10 @@
 using Assets._Project.Develop.Runtime.Gameplay.Configs;
 using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
+using Assets._Project.Develop.Runtime.Meta.Features;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
+using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProviders;
 using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
 using UnityEngine;
 
@@ -21,7 +23,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
             container.RegisterAsSingle(CreateGameplayCycle);
             container.RegisterAsSingle(CreateSequenceGeneratorService);
             container.RegisterAsSingle(CreateGameplayInputService);
-            container.RegisterAsSingle(CreateGameplayExitService);
             container.RegisterAsSingle(CreateSequenceGameplay);
         }
 
@@ -29,8 +30,13 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         {
             GameplayInputService input = c.Resolve<GameplayInputService>();
             SequenceGameplay sequenceGameplay = c.Resolve<SequenceGameplay>();
+            WalletService walletService = c.Resolve<WalletService>();
+            SceneSwitcherService sceneSwitcherService = c.Resolve<SceneSwitcherService>();
+            ICoroutinesPerformer coroutinesPerformer = c.Resolve<ICoroutinesPerformer>();
+            PlayerDataProvider playerDataProvider = c.Resolve<PlayerDataProvider>();
+            WinLossService winLossService = c.Resolve<WinLossService>();
 
-            return new GameplayCycle(input, sequenceGameplay);
+            return new GameplayCycle(input, sceneSwitcherService, sequenceGameplay, _args, walletService, coroutinesPerformer, playerDataProvider, winLossService);
         }
 
         private static SequenceGeneratorService CreateSequenceGeneratorService(DIContainer c)
@@ -43,15 +49,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         private static GameplayInputService CreateGameplayInputService(DIContainer c)
         {
             return new GameplayInputService();
-        }
-
-        private static GameplayExitService CreateGameplayExitService(DIContainer c)
-        {
-            GameplayCycle cycle = c.Resolve<GameplayCycle>();
-            SceneSwitcherService sceneSwitcher = c.Resolve<SceneSwitcherService>();
-            ICoroutinesPerformer coroutinesPerformer = c.Resolve<ICoroutinesPerformer>();
-            
-            return new GameplayExitService(cycle, sceneSwitcher, coroutinesPerformer, _args);
         }
 
         private static SequenceGameplay CreateSequenceGameplay(DIContainer c)

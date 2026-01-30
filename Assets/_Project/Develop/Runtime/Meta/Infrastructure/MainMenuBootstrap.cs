@@ -1,15 +1,14 @@
 using Assets._Project.Develop.Runtime.Gameplay;
+using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using Assets._Project.Develop.Runtime.Gameplay.Infrastructure;
 using Assets._Project.Develop.Runtime.Infrastructure;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Meta.Features;
 using Assets._Project.Develop.Runtime.Meta.Infrastructure.MetaServices;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
-using Assets._Project.Develop.Runtime.Utilities.DataManagment;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProviders;
 using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
@@ -19,9 +18,10 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
         private DIContainer _container;
         private GameModeSelectorService _gameModeSelector;
 
-        private WalletService _walletService;
-
         private PlayerDataProvider _playerDataProvider;
+        private WinLossService _winLossService;
+        private PlayerStatsPresenter _playerStatsPresenter;
+        private StatsResetPurchaseService _playerStatsResetPurchaseService;
 
         private ICoroutinesPerformer _coroutinesPerformer;
 
@@ -40,11 +40,15 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
 
             _gameModeSelector.ModeSelected += OnGameModeSelected;
 
-            _walletService = _container.Resolve<WalletService>();
-
             _playerDataProvider = _container.Resolve<PlayerDataProvider>();
 
             _coroutinesPerformer = _container.Resolve<ICoroutinesPerformer>();
+
+            _winLossService = _container.Resolve<WinLossService>();
+
+            _playerStatsPresenter = _container.Resolve<PlayerStatsPresenter>();
+
+            _playerStatsResetPurchaseService = _container.Resolve<StatsResetPurchaseService>();
 
             yield break;
         }
@@ -52,6 +56,7 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
         private void OnDestroy()
         {
             _gameModeSelector.ModeSelected -= OnGameModeSelected;
+
         }
 
         public override void Run()
@@ -63,23 +68,14 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
         {
             _gameModeSelector?.Update();
 
-            if (Input.GetKeyDown(KeyCode.Alpha5))
+            if (Input.GetKeyDown(KeyCode.R))
             {
-                _walletService.Add(CurrencyTypes.Gold, 10);
-                Debug.Log($"Кол-во золота: {_walletService.GetCurrency(CurrencyTypes.Gold).Value}");
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha6))
-            {
-                if (_walletService.Enough(CurrencyTypes.Gold, 10))
-                {
-                    _walletService.Spend(CurrencyTypes.Gold, 10);
-                    Debug.Log($"Кол-во золота: {_walletService.GetCurrency(CurrencyTypes.Gold).Value}");
-                }
-            }
+                _playerStatsResetPurchaseService.Reset();
+                _coroutinesPerformer.StartPerform(_playerDataProvider.Save());
+            }    
 
             if (Input.GetKeyDown(KeyCode.S))
-                _coroutinesPerformer.StartPerform(_playerDataProvider.Save());
+                _playerStatsPresenter.Show();
         }
 
         private void OnGameModeSelected(GameMode gameMode)

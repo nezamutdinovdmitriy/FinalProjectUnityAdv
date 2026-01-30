@@ -1,3 +1,4 @@
+using Assets._Project.Develop.Runtime.Gameplay.Configs;
 using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using System;
 using System.Text;
@@ -12,12 +13,16 @@ namespace Assets._Project.Develop.Runtime.Gameplay
         private GameplayInputService _input;
         private readonly string _targetSequence;
         private readonly StringBuilder _inputBuffer = new();
+        private readonly LevelConfig _levelConfig;
 
         public SequenceGameplay(GameplayInputService input, SequenceGeneratorService generator)
         {
             _input = input;
             _targetSequence = generator.Generate();
+            _levelConfig = generator.Config;
         }
+
+        public LevelConfig Config => _levelConfig;
 
         public void Start()
         {

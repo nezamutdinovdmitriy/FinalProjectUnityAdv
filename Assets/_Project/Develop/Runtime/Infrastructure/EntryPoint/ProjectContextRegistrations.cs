@@ -1,3 +1,4 @@
+using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Meta.Features;
 using Assets._Project.Develop.Runtime.Utilities.AssetsManagment;
@@ -30,6 +31,7 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
             container.RegisterAsSingle(CreateWalletService).NonLazy();
             container.RegisterAsSingle<ISaveLoadService>(CreateSaveLoadService);
             container.RegisterAsSingle(CreatePlayerDataProvider);
+            container.RegisterAsSingle(CreateWinLossService);
         }
 
         private static PlayerDataProvider CreatePlayerDataProvider(DIContainer c)
@@ -94,6 +96,13 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
                 currencies[currency] = new ReactiveVariable<int>();
 
             return new WalletService(currencies, c.Resolve<PlayerDataProvider>());
+        }
+
+        private static WinLossService CreateWinLossService(DIContainer c)
+        {
+            PlayerDataProvider playerDataProvider = c.Resolve<PlayerDataProvider>();
+
+            return new WinLossService(playerDataProvider);
         }
     }
 }

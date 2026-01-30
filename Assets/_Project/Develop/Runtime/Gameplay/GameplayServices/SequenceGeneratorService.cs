@@ -14,6 +14,8 @@ namespace Assets._Project.Develop.Runtime.Gameplay.GameplayServices
             _length = Random.Range(1, 6);
         }
 
+        public LevelConfig Config => _config;
+
         public string Generate()
         {
             string result = "";

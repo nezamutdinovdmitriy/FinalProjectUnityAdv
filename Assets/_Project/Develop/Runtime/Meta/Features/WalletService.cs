@@ -23,14 +23,6 @@ namespace Assets._Project.Develop.Runtime.Meta.Features
 
         public IReadOnlyVariable<int> GetCurrency(CurrencyTypes currencyTypes) => _currencies[currencyTypes];
 
-        public bool Enough(CurrencyTypes currencyTypes, int amount)
-        {
-            if (amount < 0)
-                throw new ArgumentOutOfRangeException(nameof(amount));
-
-            return _currencies[currencyTypes].Value >= amount;
-        }
-
         public void Add(CurrencyTypes currencyTypes, int amount)
         {
             if (amount < 0)
@@ -48,6 +40,14 @@ namespace Assets._Project.Develop.Runtime.Meta.Features
                 throw new ArgumentOutOfRangeException(nameof(amount));
 
             _currencies[currencyTypes].Value -= amount;
+        }
+
+        public bool Enough(CurrencyTypes currencyTypes, int amount)
+        {
+            if (amount < 0)
+                throw new ArgumentOutOfRangeException(nameof(amount));
+
+            return _currencies[currencyTypes].Value >= amount;
         }
 
         public void WriteTo(PlayerData data)

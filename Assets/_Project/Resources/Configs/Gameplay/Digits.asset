@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Digits
   m_EditorClassIdentifier: 
   <Symbols>k__BackingField: 1234567890
+  <WinReward>k__BackingField: 50
+  <DefeatPenalty>k__BackingField: 25
