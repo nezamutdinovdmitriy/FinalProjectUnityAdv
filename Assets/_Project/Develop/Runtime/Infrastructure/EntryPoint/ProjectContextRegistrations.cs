@@ -1,6 +1,8 @@
 using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Meta.Features;
+using Assets._Project.Develop.Runtime.UI;
+using Assets._Project.Develop.Runtime.UI.Core;
 using Assets._Project.Develop.Runtime.Utilities.AssetsManagment;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
@@ -32,7 +34,15 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
             container.RegisterAsSingle<ISaveLoadService>(CreateSaveLoadService);
             container.RegisterAsSingle(CreatePlayerDataProvider);
             container.RegisterAsSingle(CreateWinLossService);
+            container.RegisterAsSingle(CreateProjectPresentersFactory);
+            container.RegisterAsSingle(CreateViewsFactory);
         }
+
+        private static ViewsFactory CreateViewsFactory(DIContainer c) 
+            => new ViewsFactory(c.Resolve<ResourcesAssetsLoader>());
+
+        private static ProjectPresentersFactory CreateProjectPresentersFactory(DIContainer c)
+            => new ProjectPresentersFactory(c);
 
         private static PlayerDataProvider CreatePlayerDataProvider(DIContainer c)
             => new PlayerDataProvider(c.Resolve<ISaveLoadService>(), c.Resolve<ConfigsProviderService>());
