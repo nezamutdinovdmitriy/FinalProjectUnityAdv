@@ -26,11 +26,6 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
 
         private ICoroutinesPerformer _coroutinesPerformer;
 
-        [SerializeField] private IconTextView _currencyView;
-        private ProjectPresentersFactory _presentersFactory;
-        private CurrencyPresenter _currencyPresenter;
-        private WalletService _walletService;
-
         public override void ProcessRegistrations(DIContainer container, IInputSceneArgs sceneArgs = null)
         {
             _container = container;
@@ -49,9 +44,6 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
             _playerStatsResetPurchaseService = _container.Resolve<StatsResetPurchaseService>();
       
             _menuInputService = _container.Resolve<MainMenuInputService>();
-
-            _presentersFactory = _container.Resolve<ProjectPresentersFactory>();
-            _walletService = _container.Resolve<WalletService>();
 
             _menuInputService.ModeSelected += OnGameModeSelected;
             _menuInputService.StatsViewRequested += OnStatsViewRequested;
@@ -75,16 +67,6 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
         private void Update()
         {
             _menuInputService?.Update();
-
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                _currencyPresenter = _presentersFactory.CreateCurrencyPresenter(
-                    _currencyView,
-                    _walletService.GetCurrency(CurrencyType.Gold),
-                    CurrencyType.Gold);
-
-                _currencyPresenter.Enable();
-            }
         }
 
         private void OnGameModeSelected(GameModeType gameMode)
