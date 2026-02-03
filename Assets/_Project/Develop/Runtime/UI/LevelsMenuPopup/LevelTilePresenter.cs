@@ -1,3 +1,5 @@
+using Assets._Project.Develop.Runtime.Gameplay;
+using Assets._Project.Develop.Runtime.Gameplay.Configs;
 using Assets._Project.Develop.Runtime.Gameplay.Infrastructure;
 using Assets._Project.Develop.Runtime.Meta.Features.LevelsProgression;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
@@ -8,25 +10,22 @@ namespace Assets._Project.Develop.Runtime.UI.LevelsMenuPopup
 {
     public class LevelTilePresenter : ISubscribedPresenter
     {
-        private readonly LevelsProgressionService _levelsService;
         private readonly SceneSwitcherService _sceneSwitcher;
         private readonly ICoroutinesPerformer _coroutinesPerformer;
 
-        private readonly int _levelNumber;
+        private readonly GameModeType _gameMode;
 
         private readonly LevelTileView _view;
 
         public LevelTilePresenter(
-            LevelsProgressionService levelsService,
             SceneSwitcherService sceneSwitcher,
             ICoroutinesPerformer coroutinesPerformer,
-            int levelNumber,
+            GameModeType gameMode,
             LevelTileView view)
         {
-            _levelsService = levelsService;
             _sceneSwitcher = sceneSwitcher;
             _coroutinesPerformer = coroutinesPerformer;
-            _levelNumber = levelNumber;
+            _gameMode = gameMode;
             _view = view;
         }
 
@@ -34,19 +33,7 @@ namespace Assets._Project.Develop.Runtime.UI.LevelsMenuPopup
 
         public void Initialize()
         {
-            _view.SetLevel(_levelNumber.ToString());
-
-            if (_levelsService.CanPlay(_levelNumber))
-            {
-                if (_levelsService.IsLevelCompleted(_levelNumber))
-                    _view.SetCompleted();
-                else
-                    _view.SetActive();
-            }
-            else
-            {
-                _view.SetBlock();
-            }
+            _view.SetLevel(_gameMode.ToString());
         }
 
         public void Dispose() => _view.Clicked -= OnViewClicked;
@@ -57,13 +44,7 @@ namespace Assets._Project.Develop.Runtime.UI.LevelsMenuPopup
 
         private void OnViewClicked()
         {
-            if(_levelsService.CanPlay(_levelNumber) == false)
-            {
-                Debug.Log("Уровень заблокирован, пройдите предыдущий!");
-                return;
-            }
-
-            _coroutinesPerformer.StartPerform(_sceneSwitcher.ProcessSwitchTo(Scenes.Gameplay, new GameplayInputArgs(_levelNumber)));
+            _coroutinesPerformer.StartPerform(_sceneSwitcher.ProcessSwitchTo(Scenes.Gameplay, new GameplayInputArgs(_gameMode)));
         }
     }
 }

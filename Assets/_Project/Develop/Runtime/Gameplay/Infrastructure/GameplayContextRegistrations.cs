@@ -42,7 +42,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 
         private static SequenceGeneratorService CreateSequenceGeneratorService(DIContainer c)
         {
-            LevelsListConfigs levelListConfigs = c.Resolve<ConfigsProviderService>().GetConfig<LevelsListConfigs>().
+            LevelConfig levelConfig = c.Resolve<ConfigsProviderService>().GetConfig<LevelsListConfigs>().GetLevelConfigBy(_args.GameMode);
 
             return new SequenceGeneratorService(levelConfig);
         }

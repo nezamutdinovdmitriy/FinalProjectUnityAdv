@@ -1,3 +1,4 @@
+using Assets._Project.Develop.Runtime.Gameplay;
 using Assets._Project.Develop.Runtime.Gameplay.Configs;
 using Assets._Project.Develop.Runtime.UI.Core;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
@@ -42,13 +43,13 @@ namespace Assets._Project.Develop.Runtime.UI.LevelsMenuPopup
 
             LevelsListConfigs levelsListConfigs = _configProvider.GetConfig<LevelsListConfigs>();
 
-            for (int i = 0; i < levelsListConfigs.Levels.Count; i++)
+            foreach(LevelsListConfigs.Configs levelConfig in levelsListConfigs.Levels)
             {
                 LevelTileView levelTileView = _viewsFactory.Create<LevelTileView>(ViewIDs.LevelTile);
 
                 _view.LevelTilesListView.Add(levelTileView);
 
-                LevelTilePresenter levelTilePresenter = _presentersFactory.CreateLevelTilePresenter(levelTileView, i + 1);
+                LevelTilePresenter levelTilePresenter = _presentersFactory.CreateLevelTilePresenter(levelTileView, levelConfig.GameMode);
 
                 levelTilePresenter.Initialize();
 

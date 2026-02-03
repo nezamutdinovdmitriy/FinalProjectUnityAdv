@@ -12,13 +12,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Configs
 
         public IReadOnlyList<Configs> Levels => _levels;
 
-        public Configs GetBy(int levelNumber)
-        {
-            int levelIndex = levelNumber - 1;
-
-            return _levels[levelIndex];
-        }    
-
         public LevelConfig GetLevelConfigBy(GameModeType gameMode) => _levels.First(config => config.GameMode == gameMode).LevelConfig;
 
         [Serializable]

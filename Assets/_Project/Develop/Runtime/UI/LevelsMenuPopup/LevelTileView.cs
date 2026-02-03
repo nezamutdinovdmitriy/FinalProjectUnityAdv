@@ -16,17 +16,13 @@ namespace Assets._Project.Develop.Runtime.UI.LevelsMenuPopup
         [SerializeField] private Button _button;
 
         [SerializeField] private Color _activeColor;
-        [SerializeField] private Color _blockedColor;
-        [SerializeField] private Color _completedColor;
 
         private void OnEnable() => _button.onClick.AddListener(OnClick);
         private void OnDisable() => _button.onClick.RemoveListener(OnClick);
         private void OnDestroy() => transform.DOKill();
 
         public void SetLevel(string levelNumber) => _levelNumberText.text = levelNumber;
-        public void SetBlock() => _background.color = _blockedColor;
         public void SetActive() => _background.color = _activeColor;
-        public void SetCompleted() => _background.color = _completedColor;
 
         public Tween Hide()
         {

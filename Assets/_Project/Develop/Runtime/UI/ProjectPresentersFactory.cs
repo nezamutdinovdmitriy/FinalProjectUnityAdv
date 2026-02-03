@@ -1,3 +1,5 @@
+using Assets._Project.Develop.Runtime.Gameplay;
+using Assets._Project.Develop.Runtime.Gameplay.Configs;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Meta.Configs.Wallet;
 using Assets._Project.Develop.Runtime.Meta.Features;
@@ -49,13 +51,12 @@ namespace Assets._Project.Develop.Runtime.UI
                 view);
         }
 
-        public LevelTilePresenter CreateLevelTilePresenter(LevelTileView view, int levelNumber)
+        public LevelTilePresenter CreateLevelTilePresenter(LevelTileView view, GameModeType gameMode)
         {
             return new LevelTilePresenter(
-                _container.Resolve<LevelsProgressionService>(),
                 _container.Resolve<SceneSwitcherService>(),
                 _container.Resolve<ICoroutinesPerformer>(),
-                levelNumber,
+                gameMode,
                 view);
         }
 
