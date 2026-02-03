@@ -15,7 +15,7 @@ namespace Assets._Project.Develop.Runtime.Utilities.ConfigsManagment
 
         private readonly Dictionary<Type, string> _configsResourcesPath = new()
     {
-            {typeof(LevelsConfigs), "Configs/Gameplay/LevelsConfigs" },
+            {typeof(LevelsListConfigs), "Configs/Gameplay/LevelsConfigs" },
             {typeof(StatsResetConfig), "Configs/Meta/StatsResetConfig" },
             {typeof(StartWalletConfig), "Configs/Meta/Wallet/StartWalletConfig" },
             {typeof(CurrencyIconsConfig), "Configs/Meta/Wallet/CurrencyIconsConfig" }

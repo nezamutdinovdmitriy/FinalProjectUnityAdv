@@ -1,15 +1,9 @@
-using Assets._Project.Develop.Runtime.Gameplay;
-using Assets._Project.Develop.Runtime.Gameplay.Infrastructure;
 using Assets._Project.Develop.Runtime.Infrastructure;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Meta.Features;
 using Assets._Project.Develop.Runtime.Meta.Infrastructure.MetaServices;
-using Assets._Project.Develop.Runtime.UI;
-using Assets._Project.Develop.Runtime.UI.CommonView;
-using Assets._Project.Develop.Runtime.UI.Wallet;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProviders;
-using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
 using System.Collections;
 using UnityEngine;
 
@@ -45,7 +39,6 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
       
             _menuInputService = _container.Resolve<MainMenuInputService>();
 
-            _menuInputService.ModeSelected += OnGameModeSelected;
             _menuInputService.StatsViewRequested += OnStatsViewRequested;
             _menuInputService.ResetStatsPurchaseRequested += OnResetStatsPurchaseRequested;
 
@@ -54,7 +47,6 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
 
         private void OnDestroy()
         {
-            _menuInputService.ModeSelected -= OnGameModeSelected;
             _menuInputService.StatsViewRequested -= OnStatsViewRequested;
             _menuInputService.ResetStatsPurchaseRequested -= OnResetStatsPurchaseRequested;
         }
@@ -67,14 +59,6 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
         private void Update()
         {
             _menuInputService?.Update();
-        }
-
-        private void OnGameModeSelected(GameModeType gameMode)
-        {
-            SceneSwitcherService sceneSwitcherService = _container.Resolve<SceneSwitcherService>();
-            ICoroutinesPerformer coroutinesPerformer = _container.Resolve<ICoroutinesPerformer>();
-
-            coroutinesPerformer.StartPerform(sceneSwitcherService.ProcessSwitchTo(Scenes.Gameplay, new GameplayInputArgs(gameMode)));
         }
 
         private void OnResetStatsPurchaseRequested()

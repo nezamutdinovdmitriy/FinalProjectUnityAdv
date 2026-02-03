@@ -20,9 +20,10 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 
             Debug.Log("Процесс регистрации сервисов на сцене геймплея!");
 
-            container.RegisterAsSingle(CreateGameplayCycle);
             container.RegisterAsSingle(CreateSequenceGeneratorService);
             container.RegisterAsSingle(CreateGameplayInputService);
+
+            container.RegisterAsSingle(CreateGameplayCycle);
             container.RegisterAsSingle(CreateSequenceGameplay);
         }
 
@@ -41,7 +42,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 
         private static SequenceGeneratorService CreateSequenceGeneratorService(DIContainer c)
         {
-            LevelConfig levelConfig = c.Resolve<ConfigsProviderService>().GetConfig<LevelsConfigs>().GetLevelConfigBy(_args.GameMode);
+            LevelsListConfigs levelListConfigs = c.Resolve<ConfigsProviderService>().GetConfig<LevelsListConfigs>().
 
             return new SequenceGeneratorService(levelConfig);
         }

@@ -18,13 +18,16 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
         {
             Debug.Log("Процесс регистрации сервисов на сцене меню!");
 
-            container.RegisterAsSingle(CreatePlayerStatsPresenter);
             container.RegisterAsSingle(CreateStatsResetPurchaseService);
             container.RegisterAsSingle(CreateMainMenuInputService);
-            container.RegisterAsSingle(CreateMainMenuUIRoot).NonLazy();
-            container.RegisterAsSingle(CreateMainMenuScreenPresenterFactory);
-            container.RegisterAsSingle(CreateMainMenuScreenPresenter).NonLazy();
             container.RegisterAsSingle(CreateMainMenuPopupService);
+
+            container.RegisterAsSingle(CreateMainMenuScreenPresenterFactory);
+
+            container.RegisterAsSingle(CreatePlayerStatsPresenter);
+
+            container.RegisterAsSingle(CreateMainMenuUIRoot).NonLazy();
+            container.RegisterAsSingle(CreateMainMenuScreenPresenter).NonLazy();
         }
 
         private static MainMenuPopupService CreateMainMenuPopupService(DIContainer c)

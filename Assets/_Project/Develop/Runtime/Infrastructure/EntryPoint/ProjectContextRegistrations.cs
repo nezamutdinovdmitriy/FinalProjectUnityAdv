@@ -1,6 +1,7 @@
 using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Meta.Features;
+using Assets._Project.Develop.Runtime.Meta.Features.LevelsProgression;
 using Assets._Project.Develop.Runtime.UI;
 using Assets._Project.Develop.Runtime.UI.Core;
 using Assets._Project.Develop.Runtime.Utilities.AssetsManagment;
@@ -25,20 +26,26 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
         public static void Process(DIContainer container)
         {
             container.RegisterAsSingle<ICoroutinesPerformer>(CreateCoroutinesPerformer);
+            container.RegisterAsSingle<ISaveLoadService>(CreateSaveLoadService);
             container.RegisterAsSingle(CreateConfigsProviderService);
             container.RegisterAsSingle(CreateResourcesAssetsLoader);
             container.RegisterAsSingle(CreateSceneLoaderService);
-            container.RegisterAsSingle<ILoadingScreen>(CreateLoadingScreen);
             container.RegisterAsSingle(CreateSceneSwitcherService);
-            container.RegisterAsSingle(CreateWalletService).NonLazy();
-            container.RegisterAsSingle<ISaveLoadService>(CreateSaveLoadService);
-            container.RegisterAsSingle(CreatePlayerDataProvider);
             container.RegisterAsSingle(CreateWinLossService);
+            container.RegisterAsSingle(CreatePlayerDataProvider);
+
+            container.RegisterAsSingle<ILoadingScreen>(CreateLoadingScreen);
+
             container.RegisterAsSingle(CreateProjectPresentersFactory);
             container.RegisterAsSingle(CreateViewsFactory);
+
+            container.RegisterAsSingle(CreateWalletService).NonLazy();
+            container.RegisterAsSingle(CreateLevelsProgressionService).NonLazy();
         }
 
-        private static ViewsFactory CreateViewsFactory(DIContainer c) 
+        private static LevelsProgressionService CreateLevelsProgressionService(DIContainer c)
+            => new LevelsProgressionService(c.Resolve<PlayerDataProvider>());
+        private static ViewsFactory CreateViewsFactory(DIContainer c)
             => new ViewsFactory(c.Resolve<ResourcesAssetsLoader>());
 
         private static ProjectPresentersFactory CreateProjectPresentersFactory(DIContainer c)

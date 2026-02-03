@@ -8,6 +8,6 @@ namespace Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment
         private void Awake() => DontDestroyOnLoad(this);
 
         public Coroutine StartPerform(IEnumerator coroutineFunction) => StartCoroutine(coroutineFunction);
-        public void StopPerform(IEnumerator coroutineFunction) => StopCoroutine(coroutineFunction);
+        public void StopPerform(Coroutine coroutineFunction) => StopCoroutine(coroutineFunction);
     }
 }

@@ -64,6 +64,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainGroup: {fileID: 2130713769977673233}
+  _body: {fileID: 9193825827495490493}
+  _anticlicker: {fileID: 7868513471720953971}
   _text: {fileID: 1619278915010418608}
 --- !u!1 &1542712535711911395
 GameObject:
@@ -616,6 +618,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &7868513471720953971 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4974472385068142541, guid: 10003ec5840b4f148bd272bb933264ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 2898755854813075390}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828697053515496165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8252938963664913948 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6535329257618264482, guid: 10003ec5840b4f148bd272bb933264ed,

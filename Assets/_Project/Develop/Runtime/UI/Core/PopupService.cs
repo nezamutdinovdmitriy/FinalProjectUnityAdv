@@ -1,4 +1,5 @@
 using Assets._Project.Develop.Runtime.UI.Core.TestPopup;
+using Assets._Project.Develop.Runtime.UI.LevelsMenuPopup;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,7 +24,18 @@ namespace Assets._Project.Develop.Runtime.UI.Core
 
         protected abstract Transform PopupLayer { get; }
 
-        public TestPopupPresenter OpenTestPopup(Action closedCallback = null)
+        public LevelsMenuPopupPresenter OpenLevelsMenuPopup()
+        {
+            LevelsMenuPopupView view = ViewsFactory.Create<LevelsMenuPopupView>(ViewIDs.LevelMenuPopup, PopupLayer);
+
+            LevelsMenuPopupPresenter popup = _presentersFactory.CreateLevelsMenuPopupPresenter(view);
+
+            OnPopupCreated(popup, view);
+
+            return popup;
+        }
+
+        public TestPopupPresenter OpenLevelsMenuPopup(Action closedCallback = null)
         {
             TestPopupView view = ViewsFactory.Create<TestPopupView>(ViewIDs.TestPopupView, PopupLayer);
             TestPopupPresenter popup = _presentersFactory.CreateTestPopupPresenter(view);
