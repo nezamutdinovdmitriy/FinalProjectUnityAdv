@@ -1,10 +1,7 @@
 using Assets._Project.Develop.Runtime.Gameplay;
-using Assets._Project.Develop.Runtime.Gameplay.Configs;
 using Assets._Project.Develop.Runtime.Gameplay.Infrastructure;
-using Assets._Project.Develop.Runtime.Meta.Features.LevelsProgression;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
 using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
-using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.UI.LevelsMenuPopup
 {

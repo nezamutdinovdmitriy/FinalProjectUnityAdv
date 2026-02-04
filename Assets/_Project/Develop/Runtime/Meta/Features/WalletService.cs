@@ -34,7 +34,7 @@ namespace Assets._Project.Develop.Runtime.Meta.Features
         public void Spend(CurrencyType currencyTypes, int amount)
         {
             if (Enough(currencyTypes, amount) == false)
-                throw new InvalidOperationException($"Not enough: {currencyTypes.ToString()}");
+                throw new InvalidOperationException("Not enough: " + currencyTypes.ToString());
 
             if (amount < 0)
                 throw new ArgumentOutOfRangeException(nameof(amount));

@@ -7,5 +7,7 @@ namespace Assets._Project.Develop.Runtime.UI.Core
         public const string TestPopupView = nameof(TestPopupView);
         public const string LevelTile = nameof(LevelTile);
         public const string LevelMenuPopup = nameof(LevelMenuPopup);
+        public const string StatsInfoView = nameof(StatsInfoView);
+        public const string GameplaySequensView = nameof(GameplaySequensView);
     }
 }

@@ -16,7 +16,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay
         private readonly SequenceGameplay _gameplay;
         
         private readonly SceneSwitcherService _sceneSwitcherService;
-        private GameplayInputArgs _args;
+        private readonly GameplayInputArgs _args;
         
         private readonly ICoroutinesPerformer _coroutinesPerformer;
         

@@ -1,3 +1,4 @@
+using Assets._Project.Develop.Runtime.Meta.Features;
 using Assets._Project.Develop.Runtime.UI.Core;
 using Assets._Project.Develop.Runtime.UI.Wallet;
 using System;
@@ -13,21 +14,26 @@ namespace Assets._Project.Develop.Runtime.UI.MainMenu
 
         private readonly MainMenuPopupService _popupService;
 
+        private readonly StatsResetPurchaseService _purchaseService;
+
         private readonly List<IPresenter> _childPresenters = new();
 
         public MainMenuScreenPresenter(
             MainMenuScreenView screen,
             ProjectPresentersFactory projectPresentersFactory,
-            MainMenuPopupService popupService)
+            MainMenuPopupService popupService,
+            StatsResetPurchaseService purchaseService)
         {
             _screen = screen;
             _projectPresentersFactory = projectPresentersFactory;
             _popupService = popupService;
+            _purchaseService = purchaseService;
         }
 
         public void Initialize()
         {
             _screen.OpenLevelsMenuButtonClicked += OnOpenLevelsMenuButtonClicked;
+            _screen.PurchaseResetStatsButtonClicked += OnPurchaseResetStatsButtonClicked;
 
             CreateWallet();
 
@@ -38,6 +44,7 @@ namespace Assets._Project.Develop.Runtime.UI.MainMenu
         public void Dispose()
         {
             _screen.OpenLevelsMenuButtonClicked -= OnOpenLevelsMenuButtonClicked;
+            _screen.PurchaseResetStatsButtonClicked -= OnPurchaseResetStatsButtonClicked;
 
             foreach (IPresenter presenter in _childPresenters)
                 presenter.Dispose();
@@ -54,6 +61,11 @@ namespace Assets._Project.Develop.Runtime.UI.MainMenu
         private void OnOpenLevelsMenuButtonClicked()
         {
             _popupService.OpenLevelsMenuPopup();
+        }
+
+        private void OnPurchaseResetStatsButtonClicked()
+        {
+            _purchaseService.Reset();
         }
 
     }

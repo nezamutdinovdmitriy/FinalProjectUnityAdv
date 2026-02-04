@@ -1,4 +1,3 @@
-using Assets._Project.Develop.Runtime.UI.Core.TestPopup;
 using Assets._Project.Develop.Runtime.UI.LevelsMenuPopup;
 using System;
 using System.Collections.Generic;
@@ -31,16 +30,6 @@ namespace Assets._Project.Develop.Runtime.UI.Core
             LevelsMenuPopupPresenter popup = _presentersFactory.CreateLevelsMenuPopupPresenter(view);
 
             OnPopupCreated(popup, view);
-
-            return popup;
-        }
-
-        public TestPopupPresenter OpenLevelsMenuPopup(Action closedCallback = null)
-        {
-            TestPopupView view = ViewsFactory.Create<TestPopupView>(ViewIDs.TestPopupView, PopupLayer);
-            TestPopupPresenter popup = _presentersFactory.CreateTestPopupPresenter(view);
-
-            OnPopupCreated(popup, view, closedCallback);
 
             return popup;
         }

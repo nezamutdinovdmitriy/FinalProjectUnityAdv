@@ -1,7 +1,6 @@
 using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Meta.Features;
-using Assets._Project.Develop.Runtime.Meta.Features.LevelsProgression;
 using Assets._Project.Develop.Runtime.UI;
 using Assets._Project.Develop.Runtime.UI.Core;
 using Assets._Project.Develop.Runtime.Utilities.AssetsManagment;
@@ -31,7 +30,7 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
             container.RegisterAsSingle(CreateResourcesAssetsLoader);
             container.RegisterAsSingle(CreateSceneLoaderService);
             container.RegisterAsSingle(CreateSceneSwitcherService);
-            container.RegisterAsSingle(CreateWinLossService);
+            container.RegisterAsSingle(CreateWinLossService).NonLazy();
             container.RegisterAsSingle(CreatePlayerDataProvider);
 
             container.RegisterAsSingle<ILoadingScreen>(CreateLoadingScreen);
@@ -40,19 +39,16 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
             container.RegisterAsSingle(CreateViewsFactory);
 
             container.RegisterAsSingle(CreateWalletService).NonLazy();
-            container.RegisterAsSingle(CreateLevelsProgressionService).NonLazy();
         }
 
-        private static LevelsProgressionService CreateLevelsProgressionService(DIContainer c)
-            => new LevelsProgressionService(c.Resolve<PlayerDataProvider>());
         private static ViewsFactory CreateViewsFactory(DIContainer c)
-            => new ViewsFactory(c.Resolve<ResourcesAssetsLoader>());
+            => new(c.Resolve<ResourcesAssetsLoader>());
 
         private static ProjectPresentersFactory CreateProjectPresentersFactory(DIContainer c)
-            => new ProjectPresentersFactory(c);
+            => new(c);
 
         private static PlayerDataProvider CreatePlayerDataProvider(DIContainer c)
-            => new PlayerDataProvider(c.Resolve<ISaveLoadService>(), c.Resolve<ConfigsProviderService>());
+            => new(c.Resolve<ISaveLoadService>(), c.Resolve<ConfigsProviderService>());
 
         private static SaveLoadService CreateSaveLoadService(DIContainer c)
         {
@@ -63,7 +59,7 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
 
             IDataRepository dataRepository = new LocalFileDataRepository(saveFolderPath, "json");
 
-            return new SaveLoadService(dataSerializer, dataKeysStorage, dataRepository);
+            return new(dataSerializer, dataKeysStorage, dataRepository);
         }
 
         private static ConfigsProviderService CreateConfigsProviderService(DIContainer c)
@@ -72,7 +68,7 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
 
             ResourcesConfigsLoader resourcesConfigsLoader = new(resourcesAssetsLoader);
 
-            return new ConfigsProviderService(resourcesConfigsLoader);
+            return new(resourcesConfigsLoader);
         }
 
         private static ResourcesAssetsLoader CreateResourcesAssetsLoader(DIContainer c) => new();
@@ -102,7 +98,7 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
             SceneLoaderService sceneLoaderService = c.Resolve<SceneLoaderService>();
             ILoadingScreen loadingScreen = c.Resolve<ILoadingScreen>();
 
-            return new SceneSwitcherService(sceneLoaderService, loadingScreen, c);
+            return new(sceneLoaderService, loadingScreen, c);
         }
 
         private static WalletService CreateWalletService(DIContainer c)
@@ -112,14 +108,14 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
             foreach (CurrencyType currency in Enum.GetValues(typeof(CurrencyType)))
                 currencies[currency] = new ReactiveVariable<int>();
 
-            return new WalletService(currencies, c.Resolve<PlayerDataProvider>());
+            return new(currencies, c.Resolve<PlayerDataProvider>());
         }
 
         private static WinLossService CreateWinLossService(DIContainer c)
         {
             PlayerDataProvider playerDataProvider = c.Resolve<PlayerDataProvider>();
 
-            return new WinLossService(playerDataProvider);
+            return new(playerDataProvider);
         }
     }
 }

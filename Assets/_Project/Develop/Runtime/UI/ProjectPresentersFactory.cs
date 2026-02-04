@@ -1,12 +1,9 @@
 using Assets._Project.Develop.Runtime.Gameplay;
-using Assets._Project.Develop.Runtime.Gameplay.Configs;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Meta.Configs.Wallet;
 using Assets._Project.Develop.Runtime.Meta.Features;
-using Assets._Project.Develop.Runtime.Meta.Features.LevelsProgression;
 using Assets._Project.Develop.Runtime.UI.CommonView;
 using Assets._Project.Develop.Runtime.UI.Core;
-using Assets._Project.Develop.Runtime.UI.Core.TestPopup;
 using Assets._Project.Develop.Runtime.UI.LevelsMenuPopup;
 using Assets._Project.Develop.Runtime.UI.Wallet;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
@@ -24,11 +21,6 @@ namespace Assets._Project.Develop.Runtime.UI
         {
             _container = container;
         }
-
-        public TestPopupPresenter CreateTestPopupPresenter(TestPopupView view)
-            => new(
-                view,
-                _container.Resolve<ICoroutinesPerformer>());
 
         public WalletPresenter CreateWalletPresenter(IconTextListView view)
         {

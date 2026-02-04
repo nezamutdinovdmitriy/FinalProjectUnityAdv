@@ -2,6 +2,10 @@ using Assets._Project.Develop.Runtime.Gameplay.Configs;
 using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Meta.Features;
+using Assets._Project.Develop.Runtime.UI.Core;
+using Assets._Project.Develop.Runtime.UI.Gameplay;
+using Assets._Project.Develop.Runtime.UI.MainMenu;
+using Assets._Project.Develop.Runtime.Utilities.AssetsManagment;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProviders;
@@ -25,6 +29,26 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 
             container.RegisterAsSingle(CreateGameplayCycle);
             container.RegisterAsSingle(CreateSequenceGameplay);
+            container.RegisterAsSingle(CreateGameplayPresentersFactory);
+
+            container.RegisterAsSingle(CreateGameplayUIRoot).NonLazy();
+            container.RegisterAsSingle(CreateGameplaySequencePresenter).NonLazy();
+        }
+
+        private static GameplayPresentersFactory CreateGameplayPresentersFactory(DIContainer c)
+            => new GameplayPresentersFactory(c);
+
+        private static GameplaySequencePresenter CreateGameplaySequencePresenter(DIContainer c)
+        {
+            GameplayUIRoot root = c.Resolve<GameplayUIRoot>();
+
+            GameplayView view = c.Resolve<ViewsFactory>().Create<GameplayView>(ViewIDs.GameplaySequensView, root.HUDLayer);
+
+            GameplaySequencePresenter presenter = c.Resolve<GameplayPresentersFactory>().CreateGameplaySequencePresenter(view);
+
+            presenter.Initialize();
+
+            return presenter;
         }
 
         private static GameplayCycle CreateGameplayCycle(DIContainer c)
@@ -38,6 +62,11 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
             WinLossService winLossService = c.Resolve<WinLossService>();
 
             return new GameplayCycle(input, sceneSwitcherService, sequenceGameplay, _args, walletService, coroutinesPerformer, playerDataProvider, winLossService);
+        }
+
+        private static GameplayUIRoot CreateGameplayUIRoot(DIContainer c)
+        {
+            return Object.Instantiate(c.Resolve<ResourcesAssetsLoader>().Load<GameplayUIRoot>("UI/Gameplay/GameplayUIRoot"));
         }
 
         private static SequenceGeneratorService CreateSequenceGeneratorService(DIContainer c)

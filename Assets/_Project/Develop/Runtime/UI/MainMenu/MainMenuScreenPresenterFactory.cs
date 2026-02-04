@@ -1,4 +1,8 @@
+using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
+using Assets._Project.Develop.Runtime.Meta.Features;
+using Assets._Project.Develop.Runtime.UI.CommonView;
+using Assets._Project.Develop.Runtime.UI.StatsInfo;
 
 namespace Assets._Project.Develop.Runtime.UI.MainMenu
 {
@@ -11,10 +15,18 @@ namespace Assets._Project.Develop.Runtime.UI.MainMenu
             _container = container;
         }
 
+        public StatsInfoPresenter CreateStatsInfoPresenter(TextView view)
+        {
+            return new StatsInfoPresenter(
+                _container.Resolve<WinLossService>(),
+                view);
+        }
+
         public MainMenuScreenPresenter CreateMainMenuScreenPresenter(MainMenuScreenView view)
-            => new MainMenuScreenPresenter(
+            => new(
                 view,
                 _container.Resolve<ProjectPresentersFactory>(),
-                _container.Resolve<MainMenuPopupService>());
+                _container.Resolve<MainMenuPopupService>(),
+                _container.Resolve<StatsResetPurchaseService>());
     }
 }

@@ -4,10 +4,15 @@ using Assets._Project.Develop.Runtime.Meta.Configs.StatsReset;
 using Assets._Project.Develop.Runtime.Meta.Features;
 using Assets._Project.Develop.Runtime.Meta.Infrastructure.MetaServices;
 using Assets._Project.Develop.Runtime.UI;
+using Assets._Project.Develop.Runtime.UI.CommonView;
 using Assets._Project.Develop.Runtime.UI.Core;
+using Assets._Project.Develop.Runtime.UI.Gameplay;
 using Assets._Project.Develop.Runtime.UI.MainMenu;
+using Assets._Project.Develop.Runtime.UI.StatsInfo;
 using Assets._Project.Develop.Runtime.Utilities.AssetsManagment;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
+using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
+using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProviders;
 using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
@@ -24,10 +29,16 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
 
             container.RegisterAsSingle(CreateMainMenuScreenPresenterFactory);
 
-            container.RegisterAsSingle(CreatePlayerStatsPresenter);
-
             container.RegisterAsSingle(CreateMainMenuUIRoot).NonLazy();
             container.RegisterAsSingle(CreateMainMenuScreenPresenter).NonLazy();
+            container.RegisterAsSingle(CreateStatsInfoPresenter).NonLazy();
+        }
+
+        private static StatsInfoPresenter CreateStatsInfoPresenter(DIContainer c)
+        {
+            return new StatsInfoPresenter(
+                c.Resolve<WinLossService>(),
+                c.Resolve<ViewsFactory>().Create<TextView>(ViewIDs.StatsInfoView,c.Resolve<MainMenuUIRoot>().HUDLayer));
         }
 
         private static MainMenuPopupService CreateMainMenuPopupService(DIContainer c)
@@ -50,7 +61,7 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
         }
 
         private static MainMenuScreenPresenterFactory CreateMainMenuScreenPresenterFactory(DIContainer c)
-            => new MainMenuScreenPresenterFactory(c);
+            => new(c);
 
         private static MainMenuUIRoot CreateMainMenuUIRoot(DIContainer c)
         {
@@ -62,25 +73,19 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
         }
 
         private static MainMenuInputService CreateMainMenuInputService(DIContainer c)
-            => new MainMenuInputService();
-
-        private static PlayerStatsPresenter CreatePlayerStatsPresenter(DIContainer c)
-        {
-            WalletService walletService = c.Resolve<WalletService>();
-            WinLossService winLossService = c.Resolve<WinLossService>();
-
-            return new PlayerStatsPresenter(walletService, winLossService);
-        }
+            => new();
 
         private static StatsResetPurchaseService CreateStatsResetPurchaseService(DIContainer c)
         {
             WalletService walletService = c.Resolve<WalletService>();
             WinLossService winLossService = c.Resolve<WinLossService>();
             ConfigsProviderService configsProviderService = c.Resolve<ConfigsProviderService>();
+            PlayerDataProvider playerDataProvider = c.Resolve<PlayerDataProvider>();
+            ICoroutinesPerformer coroutinesPerformer = c.Resolve<ICoroutinesPerformer>();
 
             StatsResetConfig config = configsProviderService.GetConfig<StatsResetConfig>();
 
-            return new StatsResetPurchaseService(walletService, winLossService, config.Price);
+            return new StatsResetPurchaseService(walletService, winLossService, playerDataProvider, coroutinesPerformer, config.Price);
         }
     }
 }

@@ -2,7 +2,6 @@ using Assets._Project.Develop.Runtime.Meta.Features;
 using Assets._Project.Develop.Runtime.UI.CommonView;
 using Assets._Project.Develop.Runtime.UI.Core;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.UI.Wallet
 {

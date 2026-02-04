@@ -1,14 +1,19 @@
 using Assets._Project.Develop.Runtime.Utilities.DataManagment;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProviders;
+using System;
+using Unity.VisualScripting;
+using static UnityEngine.CullingGroup;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.GameplayServices
 {
     public class WinLossService : IDataReader<PlayerData>, IDataWriter<PlayerData>
     {
+        public event Action StatsChanged;
+
         private int _totalWins;
         private int _totalLosses;
 
-        private PlayerDataProvider _playerDataProvider;
+        private readonly PlayerDataProvider _playerDataProvider;
 
         public WinLossService(PlayerDataProvider playerDataProvider)
         {
@@ -21,13 +26,22 @@ namespace Assets._Project.Develop.Runtime.Gameplay.GameplayServices
         public int TotalWins => _totalWins;
         public int TotalLosses => _totalLosses;
 
-        public void AddWins() => _totalWins++;
-        public void AddLosses() => _totalLosses++;
+        public void AddWins()
+        {
+            _totalWins++;
+            StatsChanged?.Invoke();
+        }
+        public void AddLosses()
+        {
+            _totalLosses++;
+            StatsChanged?.Invoke();
+        }
 
         public void Reset()
         {
             _totalWins = 0;
             _totalLosses = 0;
+            StatsChanged?.Invoke();
         }
 
         public void ReadFrom(PlayerData data)

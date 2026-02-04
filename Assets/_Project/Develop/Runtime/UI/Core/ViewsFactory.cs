@@ -16,7 +16,9 @@ namespace Assets._Project.Develop.Runtime.UI.Core
             {ViewIDs.MainMenuScreen, "UI/MainMenu/MainMenuScreenView" },
             {ViewIDs.TestPopupView, "UI/TestPopup" },
             {ViewIDs.LevelTile, "UI/LevelsMenuPopup/LevelTile" },
-            {ViewIDs.LevelMenuPopup, "UI/LevelsMenuPopup/LevelsMenuPopup" }
+            {ViewIDs.LevelMenuPopup, "UI/LevelsMenuPopup/LevelsMenuPopup" },
+            {ViewIDs.StatsInfoView, "UI/StatsInfo/StatsInfoView" },
+            {ViewIDs.GameplaySequensView, "UI/Gameplay/GameplayView" }
         };
 
         public ViewsFactory(ResourcesAssetsLoader resourcesAssetsLoader)
@@ -31,6 +33,7 @@ namespace Assets._Project.Develop.Runtime.UI.Core
 
             GameObject prefab = _resourcesAssetsLoader.Load<GameObject>(resourcePath);
             GameObject instance = Object.Instantiate(prefab, parent);
+            
             TView view = instance.GetComponent<TView>();
 
             if (view == null)

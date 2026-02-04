@@ -9,8 +9,9 @@ namespace Assets._Project.Develop.Runtime.Gameplay
     public class SequenceGameplay : IDisposable
     {
         public event Action<GameplayResult> Finished;
+        public event Action InputSequenceChanged;
 
-        private GameplayInputService _input;
+        private readonly GameplayInputService _input;
         private readonly string _targetSequence;
         private readonly StringBuilder _inputBuffer = new();
         private readonly LevelConfig _levelConfig;
@@ -23,6 +24,9 @@ namespace Assets._Project.Develop.Runtime.Gameplay
         }
 
         public LevelConfig Config => _levelConfig;
+
+        public string TargetSequence => _targetSequence;
+        public StringBuilder InputBuffer => _inputBuffer;
 
         public void Start()
         {
@@ -39,6 +43,8 @@ namespace Assets._Project.Develop.Runtime.Gameplay
         {
             _inputBuffer.Append(input);
             Debug.Log($"Ввод игрока: {_inputBuffer}");
+
+            InputSequenceChanged?.Invoke();
 
             if (_inputBuffer.Length < _targetSequence.Length)
                 return;
