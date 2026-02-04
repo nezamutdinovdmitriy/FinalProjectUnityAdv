@@ -2,11 +2,9 @@ using Assets._Project.Develop.Runtime.Gameplay.GameplayServices;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Meta.Configs.StatsReset;
 using Assets._Project.Develop.Runtime.Meta.Features;
-using Assets._Project.Develop.Runtime.Meta.Infrastructure.MetaServices;
 using Assets._Project.Develop.Runtime.UI;
 using Assets._Project.Develop.Runtime.UI.CommonView;
 using Assets._Project.Develop.Runtime.UI.Core;
-using Assets._Project.Develop.Runtime.UI.Gameplay;
 using Assets._Project.Develop.Runtime.UI.MainMenu;
 using Assets._Project.Develop.Runtime.UI.StatsInfo;
 using Assets._Project.Develop.Runtime.Utilities.AssetsManagment;
@@ -24,7 +22,6 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
             Debug.Log("Процесс регистрации сервисов на сцене меню!");
 
             container.RegisterAsSingle(CreateStatsResetPurchaseService);
-            container.RegisterAsSingle(CreateMainMenuInputService);
             container.RegisterAsSingle(CreateMainMenuPopupService);
 
             container.RegisterAsSingle(CreateMainMenuScreenPresenterFactory);
@@ -71,9 +68,6 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
 
             return Object.Instantiate(mainMenuUIRootPrefab);
         }
-
-        private static MainMenuInputService CreateMainMenuInputService(DIContainer c)
-            => new();
 
         private static StatsResetPurchaseService CreateStatsResetPurchaseService(DIContainer c)
         {

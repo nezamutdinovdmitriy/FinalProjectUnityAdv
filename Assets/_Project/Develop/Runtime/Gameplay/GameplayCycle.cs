@@ -11,7 +11,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay
 {
     public class GameplayCycle : IDisposable
     {
-        private readonly GameplayInputService _input;
+        private readonly IGameplayInput _input;
         
         private readonly SequenceGameplay _gameplay;
         
@@ -27,7 +27,8 @@ namespace Assets._Project.Develop.Runtime.Gameplay
         private bool _awaitingConfirm;
         private GameplayResult _result;
 
-        public GameplayCycle(GameplayInputService input,
+        public GameplayCycle(
+            IGameplayInput input,
             SceneSwitcherService sceneSwitcherService,
             SequenceGameplay gameplay,
             GameplayInputArgs args,

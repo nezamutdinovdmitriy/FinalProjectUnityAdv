@@ -53,7 +53,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 
         private static GameplayCycle CreateGameplayCycle(DIContainer c)
         {
-            GameplayInputService input = c.Resolve<GameplayInputService>();
+            IGameplayInput input = c.Resolve<GameplayDesktopInputHandler>();
             SequenceGameplay sequenceGameplay = c.Resolve<SequenceGameplay>();
             WalletService walletService = c.Resolve<WalletService>();
             SceneSwitcherService sceneSwitcherService = c.Resolve<SceneSwitcherService>();
@@ -76,14 +76,14 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
             return new SequenceGeneratorService(levelConfig);
         }
 
-        private static GameplayInputService CreateGameplayInputService(DIContainer c)
+        private static GameplayDesktopInputHandler CreateGameplayInputService(DIContainer c)
         {
-            return new GameplayInputService();
+            return new GameplayDesktopInputHandler();
         }
 
         private static SequenceGameplay CreateSequenceGameplay(DIContainer c)
         {
-            GameplayInputService input = c.Resolve<GameplayInputService>();
+            IGameplayInput input = c.Resolve<GameplayDesktopInputHandler>();
             SequenceGeneratorService sequenceGenerator = c.Resolve<SequenceGeneratorService>();
 
             return new SequenceGameplay(input, sequenceGenerator);

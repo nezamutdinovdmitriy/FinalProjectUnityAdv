@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.GameplayServices
 {
-    public class GameplayInputService
+    public class GameplayDesktopInputHandler : IGameplayInput
     {
         private const KeyCode ConfirmKey = KeyCode.Space;
 

@@ -11,12 +11,12 @@ namespace Assets._Project.Develop.Runtime.Gameplay
         public event Action<GameplayResult> Finished;
         public event Action InputSequenceChanged;
 
-        private readonly GameplayInputService _input;
+        private readonly IGameplayInput _input;
         private readonly string _targetSequence;
         private readonly StringBuilder _inputBuffer = new();
         private readonly LevelConfig _levelConfig;
 
-        public SequenceGameplay(GameplayInputService input, SequenceGeneratorService generator)
+        public SequenceGameplay(IGameplayInput input, SequenceGeneratorService generator)
         {
             _input = input;
             _targetSequence = generator.Generate();
